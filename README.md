@@ -50,6 +50,13 @@ and streams a new reading twice a second; the page polls the API once
 a second. Use the "Simulate a fault" buttons to force an overheat
 event, or just wait — faults also trigger randomly on their own.
 
+### Deploy publicly
+
+This is a Flask app, so the GitHub repository itself cannot run the dashboard.
+To deploy the same app publicly, create a new Web Service on Render from this
+repository. Render will use `render.yaml`, install the requirements, and start
+the app with Gunicorn.
+
 To try the offline Matplotlib report:
 
 ```bash
