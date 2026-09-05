@@ -64,6 +64,12 @@ curl -o session.csv http://localhost:5000/api/export.csv
 python analyze_log.py session.csv
 ```
 
+### Streamlit deployment
+
+The repository also includes `streamlit_app.py`, a Streamlit version of the
+dashboard. Deploy it from Streamlit Community Cloud using this repository and
+set the app file to `streamlit_app.py`.
+
 ## Project structure
 
 ```
