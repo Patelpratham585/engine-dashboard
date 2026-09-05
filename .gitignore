@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.csv
+*.png
+.DS_Store
+INTERVIEW_PREP.md.pdf

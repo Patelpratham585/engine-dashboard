@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Coolant Watch — Engine Health Monitor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="rig" id="rig" data-status="normal">
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">◍</span>
+      <div class="brand-text">
+        <h1>Coolant Watch</h1>
+        <p>Engine bay telemetry — Unit&nbsp;07</p>
+      </div>
+    </div>
+    <div class="live-pill" id="live-pill">
+      <span class="dot"></span>
+      <span id="live-pill-text">reading live</span>
+    </div>
+  </header>
+
+  <div class="alert-rail" id="alert-rail" hidden>
+    <span class="alert-icon">▲</span>
+    <span id="alert-text">—</span>
+  </div>
+
+  <main class="grid">
+
+    <section class="panel panel-chart">
+      <div class="panel-head">
+        <h2>Coolant temperature</h2>
+        <div class="temp-readout">
+          <span id="temp-value">--</span><span class="unit">°C</span>
+        </div>
+      </div>
+      <canvas id="tempChart" height="260"></canvas>
+      <div class="threshold-key">
+        <span><i class="sw sw-normal"></i>normal &lt; {{ normal_max }}°</span>
+        <span><i class="sw sw-elevated"></i>elevated</span>
+        <span><i class="sw sw-warning"></i>warning ≥ {{ warning_max }}°</span>
+        <span><i class="sw sw-critical"></i>critical ≥ {{ critical_max }}°</span>
+      </div>
+    </section>
+
+    <aside class="panel panel-stack">
+      <div class="gauge">
+        <div class="gauge-label">Engine speed</div>
+        <div class="gauge-value"><span id="rpm-value">--</span><span class="unit">rpm</span></div>
+        <div class="bar"><div class="bar-fill" id="rpm-bar" style="width:0%"></div></div>
+      </div>
+      <div class="gauge">
+        <div class="gauge-label">Oil pressure</div>
+        <div class="gauge-value"><span id="oil-value">--</span><span class="unit">psi</span></div>
+        <div class="bar"><div class="bar-fill" id="oil-bar" style="width:0%"></div></div>
+      </div>
+      <div class="gauge">
+        <div class="gauge-label">Load</div>
+        <div class="gauge-value"><span id="load-value">--</span><span class="unit">%</span></div>
+        <div class="bar"><div class="bar-fill" id="load-bar" style="width:0%"></div></div>
+      </div>
+    </aside>
+
+    <section class="panel panel-stats">
+      <h2>Session stats <span class="sub">(pandas rolling window)</span></h2>
+      <div class="stat-grid">
+        <div class="stat"><span class="stat-label">Rolling avg</span><span class="stat-value" id="stat-avg">--°C</span></div>
+        <div class="stat"><span class="stat-label">Session max</span><span class="stat-value" id="stat-max">--°C</span></div>
+        <div class="stat"><span class="stat-label">Session min</span><span class="stat-value" id="stat-min">--°C</span></div>
+        <div class="stat"><span class="stat-label">Mean</span><span class="stat-value" id="stat-mean">--°C</span></div>
+        <div class="stat"><span class="stat-label">Time overheating</span><span class="stat-value" id="stat-overheat">0s</span></div>
+        <div class="stat"><span class="stat-label">Readings logged</span><span class="stat-value" id="stat-count">0</span></div>
+      </div>
+      <a class="export-link" href="/api/export.csv" download>Export session log (.csv) ↓</a>
+    </section>
+
+    <section class="panel panel-controls">
+      <h2>Simulate a fault <span class="sub">(demo controls)</span></h2>
+      <p class="controls-note">The backend runs a live thermal simulation and injects faults on its own — or trigger one manually to see the alert respond immediately.</p>
+      <div class="control-buttons">
+        <button data-fault="stuck_thermostat">Stuck thermostat</button>
+        <button data-fault="coolant_loss">Coolant loss</button>
+        <button data-fault="high_load">Sustained high load</button>
+        <button data-fault="clear" class="clear">Clear fault</button>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    Simulated data — thermal model runs server-side in <code>sensor_sim.py</code>, served via Flask, rendered with Chart.js. No real hardware involved.
+  </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script>
+  window.THRESHOLDS = {
+    normal_max: {{ normal_max }},
+    warning_max: {{ warning_max }},
+    critical_max: {{ critical_max }}
+  };
+</script>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
