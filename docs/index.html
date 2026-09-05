@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Coolant Watch — Engine Health Monitor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="rig" id="rig" data-status="normal">
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">◍</span><div class="brand-text"><h1>Coolant Watch</h1><p>Engine bay telemetry — Unit&nbsp;07</p></div></div>
+    <div class="live-pill"><span class="dot"></span><span>reading live</span></div>
+  </header>
+  <div class="alert-rail" id="alert-rail" hidden><span class="alert-icon">▲</span><span id="alert-text">—</span></div>
+  <main class="grid">
+    <section class="panel panel-chart">
+      <div class="panel-head"><h2>Coolant temperature</h2><div class="temp-readout"><span id="temp-value">--</span><span class="unit">°C</span></div></div>
+      <canvas id="tempChart" height="260"></canvas>
+      <div class="threshold-key"><span><i class="sw sw-normal"></i>normal &lt; 105°</span><span><i class="sw sw-elevated"></i>elevated</span><span><i class="sw sw-warning"></i>warning ≥ 115°</span><span><i class="sw sw-critical"></i>critical ≥ 125°</span></div>
+    </section>
+    <aside class="panel panel-stack">
+      <div class="gauge"><div class="gauge-label">Engine speed</div><div class="gauge-value"><span id="rpm-value">--</span><span class="unit">rpm</span></div><div class="bar"><div class="bar-fill" id="rpm-bar"></div></div></div>
+      <div class="gauge"><div class="gauge-label">Oil pressure</div><div class="gauge-value"><span id="oil-value">--</span><span class="unit">psi</span></div><div class="bar"><div class="bar-fill" id="oil-bar"></div></div></div>
+      <div class="gauge"><div class="gauge-label">Load</div><div class="gauge-value"><span id="load-value">--</span><span class="unit">%</span></div><div class="bar"><div class="bar-fill" id="load-bar"></div></div></div>
+    </aside>
+    <section class="panel panel-stats"><h2>Session stats <span class="sub">(browser simulation)</span></h2><div class="stat-grid">
+      <div class="stat"><span class="stat-label">Rolling avg</span><span class="stat-value" id="stat-avg">--°C</span></div><div class="stat"><span class="stat-label">Session max</span><span class="stat-value" id="stat-max">--°C</span></div><div class="stat"><span class="stat-label">Session min</span><span class="stat-value" id="stat-min">--°C</span></div><div class="stat"><span class="stat-label">Mean</span><span class="stat-value" id="stat-mean">--°C</span></div><div class="stat"><span class="stat-label">Time overheating</span><span class="stat-value" id="stat-overheat">0s</span></div><div class="stat"><span class="stat-label">Readings logged</span><span class="stat-value" id="stat-count">0</span></div>
+    </div><a class="export-link" id="export-link" href="#">Export session log (.csv) ↓</a></section>
+    <section class="panel panel-controls"><h2>Simulate a fault <span class="sub">(demo controls)</span></h2><p class="controls-note">The browser runs a live thermal simulation. Trigger a fault to see the alert respond immediately.</p><div class="control-buttons"><button data-fault="stuck_thermostat">Stuck thermostat</button><button data-fault="coolant_loss">Coolant loss</button><button data-fault="high_load">Sustained high load</button><button data-fault="clear" class="clear">Clear fault</button></div></section>
+  </main>
+  <footer class="footer">Simulated data — browser version for GitHub Pages. The full Flask version runs locally with <code>python app.py</code>.</footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

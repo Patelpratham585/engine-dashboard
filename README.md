@@ -57,6 +57,15 @@ To deploy the same app publicly, create a new Web Service on Render from this
 repository. Render will use `render.yaml`, install the requirements, and start
 the app with Gunicorn.
 
+### Free GitHub Pages demo
+
+The `docs/` folder contains a browser-only version with the same dashboard,
+Chart.js graph, live simulation, fault controls, and CSV export. In the
+repository settings, open **Pages**, choose **Deploy from a branch**, select
+`main` and the `/docs` folder, then save. GitHub will publish it at:
+
+`https://patelpratham585.github.io/engine-dashboard/`
+
 To try the offline Matplotlib report:
 
 ```bash
